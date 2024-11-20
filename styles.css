@@ -1,0 +1,484 @@
+.container {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+}
+
+.content {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.content.active {
+    display: block;
+}
+
+img, video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/* 添加呼吸动画关键帧 */
+@keyframes breathe {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+/* 基础按钮样式 */
+.action-button {
+    position: absolute;
+    background-color: rgba(128, 128, 128, 0.8);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    /* 添加动画 */
+    animation: breathe 2s infinite ease-in-out;
+}
+
+/* 每个按钮使用不同的动画延迟，造成错落感 */
+#challengeBtn {
+    bottom: 25%;
+    left: 8.5%;
+    padding: 1.2vw 2.4vw;
+    font-size: 1.2vw;
+    animation-delay: 0s;
+}
+
+#fightBtn {
+    bottom: 25%;
+    left: 10%;
+    padding: 1.2vw 2.4vw;
+    font-size: 1.2vw;
+    animation-delay: 0s;
+}
+
+#finalChallengeBtn {
+    bottom: 40%;
+    left: 28.5%;
+    padding: 1.2vw 2.4vw;
+    font-size: 1.2vw;
+    animation-delay: 0s;
+}
+
+#finalFightBtn {
+    bottom: 40%;
+    left: 29.5%;
+    padding: 1.2vw 2.4vw;
+    font-size: 1.2vw;
+    animation-delay: 0s;
+}
+
+/* 鼠标悬停时暂停动画 */
+.action-button:hover {
+    animation-play-state: paused;
+    background-color: rgba(128, 128, 128, 0.9);
+}
+
+/* 弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #2a2a2a;
+    padding: 40px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+}
+
+.modal-content h2 {
+    color: white;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.modal-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-button:hover {
+    transform: scale(1.05);
+    background-color: #0056b3;
+}
+
+#exitBtn {
+    background-color: #dc3545;
+}
+
+#exitBtn:hover {
+    background-color: #c82333;
+}
+
+/* 胜利弹窗特殊样式 */
+.victory-content h2 {
+    color: #ffd700; /* 金色 */
+    font-size: 48px;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    animation: victoryGlow 2s infinite ease-in-out;
+}
+
+@keyframes victoryGlow {
+    0% {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+    }
+    100% {
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+}
+
+/* 胜利弹窗按钮样式 */
+.victory-content .modal-button {
+    padding: 20px 40px;
+    font-size: 20px;
+}
+
+#playAgainBtn {
+    background-color: #28a745;
+}
+
+#playAgainBtn:hover {
+    background-color: #218838;
+}
+
+#victoryExitBtn {
+    background-color: #dc3545;
+}
+
+#victoryExitBtn:hover {
+    background-color: #c82333;
+}
+
+/* 礼花容器样式 */
+.fireworks-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1001;
+}
+
+/* 修改礼花粒子样式 */
+.firework {
+    position: absolute;
+    bottom: -20px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    box-shadow: 0 0 10px currentColor;
+    animation: firework-rise 2.5s ease-out forwards;
+    transform-origin: center;
+}
+
+/* 修改礼花动画为更慢的抛物线运动 */
+@keyframes firework-rise {
+    0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+    }
+    40% {
+        transform: translateY(-60vh) translateX(var(--dx));
+        opacity: 1;
+    }
+    80% {
+        transform: translateY(-30vh) translateX(calc(var(--dx) * 1.5));
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-10vh) translateX(calc(var(--dx) * 2));
+        opacity: 0;
+    }
+}
+
+/* 添加拖尾效果 */
+.firework::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: inherit;
+    filter: blur(5px);
+    opacity: 0.7;
+}
+
+/* 胜利弹窗背景视频样式 */
+.victory-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 0.5; /* 调整透明度使其不会太抢眼 */
+}
+
+/* 调整胜利弹窗的背景 */
+#victoryModal {
+    background-color: rgba(0, 0, 0, 0.5); /* 半透明黑色背景 */
+}
+
+/* 确保内容在视频上层 */
+.victory-content {
+    position: relative;
+    z-index: 1;
+    background-color: rgba(42, 42, 42, 0.8); /* 增加透明度 */
+}
+
+/* 添加灯光容器样式 */
+.disco-lights {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* 灯光射线样式 */
+.light-beam {
+    position: absolute;
+    width: 100px;
+    height: 100vh;
+    background: linear-gradient(to bottom, 
+        rgba(255, 0, 0, 0) 0%,
+        rgba(255, 0, 0, 0.2) 50%,
+        rgba(255, 0, 0, 0) 100%);
+    transform-origin: top;
+    animation: rotate-beam 4s infinite linear;
+    mix-blend-mode: screen;
+    opacity: 0;
+}
+
+/* 不同颜色的灯光 */
+.light-beam:nth-child(2) {
+    background: linear-gradient(to bottom,
+        rgba(0, 255, 0, 0) 0%,
+        rgba(0, 255, 0, 0.2) 50%,
+        rgba(0, 255, 0, 0) 100%);
+    animation-delay: -1s;
+}
+
+.light-beam:nth-child(3) {
+    background: linear-gradient(to bottom,
+        rgba(0, 0, 255, 0) 0%,
+        rgba(0, 0, 255, 0.2) 50%,
+        rgba(0, 0, 255, 0) 100%);
+    animation-delay: -2s;
+}
+
+.light-beam:nth-child(4) {
+    background: linear-gradient(to bottom,
+        rgba(255, 255, 0, 0) 0%,
+        rgba(255, 255, 0, 0.2) 50%,
+        rgba(255, 255, 0, 0) 100%);
+    animation-delay: -3s;
+}
+
+/* 灯光旋转动画 */
+@keyframes rotate-beam {
+    0% {
+        transform: rotate(-45deg) translateX(-50%);
+        opacity: 0.9;
+    }
+    25% {
+        transform: rotate(45deg) translateX(50%);
+        opacity: 0.7;
+    }
+    50% {
+        transform: rotate(135deg) translateX(50%);
+        opacity: 0.9;
+    }
+    75% {
+        transform: rotate(225deg) translateX(-50%);
+        opacity: 0.7;
+    }
+    100% {
+        transform: rotate(315deg) translateX(-50%);
+        opacity: 0.9;
+    }
+}
+
+/* 添加闪烁效果 */
+@keyframes flicker {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 0.3; }
+}
+
+/* 修改胜利弹窗样式，确保灯光效果可见 */
+#victoryModal {
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: hidden;
+}
+
+.victory-content {
+    position: relative;
+    z-index: 2;
+    background-color: rgba(42, 42, 42, 0.6);
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+/* 给标题添加霓虹灯效果 */
+.victory-content h2 {
+    animation: victoryGlow 2s infinite ease-in-out,
+               flicker 4s infinite ease-in-out;
+    text-shadow: 0 0 10px #ffd700,
+                 0 0 20px #ffd700,
+                 0 0 30px #ff4da6,
+                 0 0 40px #ff4da6;
+}
+
+/* 灯光球容器样式 */
+.disco-balls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1;
+    display: flex;
+    gap: 20px;
+}
+
+/* 灯光球样式 */
+.disco-ball {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%,
+        rgba(255, 255, 255, 0.8) 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        rgba(255, 255, 255, 0.1) 100%);
+    box-shadow: 
+        0 0 10px rgba(255, 255, 255, 0.5),
+        0 0 20px rgba(255, 255, 255, 0.3),
+        0 0 30px rgba(255, 255, 255, 0.2);
+    animation: disco-pulse 2s infinite ease-in-out;
+}
+
+/* 为每个灯光球设置不同的颜色和动画延迟 */
+.disco-ball:nth-child(1) {
+    background: radial-gradient(circle at 30% 30%,
+        rgba(255, 0, 0, 0.8) 0%,
+        rgba(255, 0, 0, 0.2) 50%,
+        rgba(255, 0, 0, 0.1) 100%);
+    animation-delay: 0s;
+}
+
+.disco-ball:nth-child(2) {
+    background: radial-gradient(circle at 30% 30%,
+        rgba(0, 255, 0, 0.8) 0%,
+        rgba(0, 255, 0, 0.2) 50%,
+        rgba(0, 255, 0, 0.1) 100%);
+    animation-delay: 0.3s;
+}
+
+.disco-ball:nth-child(3) {
+    background: radial-gradient(circle at 30% 30%,
+        rgba(0, 0, 255, 0.8) 0%,
+        rgba(0, 0, 255, 0.2) 50%,
+        rgba(0, 0, 255, 0.1) 100%);
+    animation-delay: 0.6s;
+}
+
+/* 灯光球脉冲动画 */
+@keyframes disco-pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+/* 添加灯光球的光晕效果 */
+.disco-ball::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: inherit;
+    filter: blur(5px);
+    opacity: 0.9;
+    z-index: -1;
+    animation: glow-pulse 2s infinite ease-in-out;
+}
+
+/* 光晕动画 */
+@keyframes glow-pulse {
+    0% {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.3);
+    }
+    100% {
+        opacity: 0.5;
+        transform: scale(1.1);
+    }
+} 
